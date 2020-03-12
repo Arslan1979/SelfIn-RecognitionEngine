@@ -1,0 +1,11 @@
+<div style="border-color: black;border-width: 2px; border-style: solid;">
+    <!--Enctype sets the type of files we will receive, and name is what is used to retrieve the image-->
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label>Select Image</label>
+        <div class="form-group">
+            <input style="margin-top: 15px;" type="file" class="form-control-file" name="image" id="exampleFormControlFile1">
+        </div>
+
+        <button style="margin-top: 15px;" type="submit">Upload Image</button>
+    </form>
+<div>
