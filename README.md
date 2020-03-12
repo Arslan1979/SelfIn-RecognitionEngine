@@ -6,4 +6,4 @@ SelfIn is the future of authentication! With the use of face, voice and speech r
 
 Module is built using this article: https://thenewstack.io/get-started-with-google-cloud-automl-vision-for-image-classification/
 
-Using python 3.8.1 and flask. 
+Using python 3.8.1 and flask 1.1.1. 
