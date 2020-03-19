@@ -3,6 +3,9 @@ import numpy as np
 import os
 from pathlib import Path, WindowsPath, PureWindowsPath
 
+def generateDataset(image, id, imageId):
+    cv2.imwrite("FaceRecognition/Data/user." + str(id)+"."+str(imageId)+".jpg", image)
+
 def drawBoundary(image, classifier, scaleFactor, minNeighbors, colour, text):
     #convert video stream to gray
     grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -20,7 +23,7 @@ def drawBoundary(image, classifier, scaleFactor, minNeighbors, colour, text):
     
     return coordinates
 
-def detect(image, faceClassifier, eyeClassifier):
+def detect(image, faceClassifier, eyeClassifier, imageId):
     colour = {
         "blue" : (255,0,0),
         "red" : (0,0,255),
@@ -30,9 +33,14 @@ def detect(image, faceClassifier, eyeClassifier):
 
     coordinates = drawBoundary(image, faceClassifier, 1.1, 10, colour['blue'], "Face")
     
-    if len(coordinates) == 4:
+    if len(coordinates) == 4:   
         croppedFaceImage = image[coordinates[1]:coordinates[1] + coordinates[3], coordinates[0]: coordinates[0] + coordinates[2]]
-        coordinates = drawBoundary(croppedFaceImage, eyeClassifier, 1.1, 14, colour['red'], "Eyes")
+
+        userId = 1
+        generateDataset(croppedFaceImage, userId, imageId)
+
+        #Draw binding box for face and eye detection
+        # coordinates = drawBoundary(croppedFaceImage, eyeClassifier, 1.1, 14, colour['red'], "Eyes")
 
     return image
 
@@ -46,11 +54,14 @@ eyeClassifier = cv2.CascadeClassifier('FaceRecognition/Classifiers/eye.xml')
 #webcam footage feed
 videoStream = cv2.VideoCapture(0)
 
+imageId = 0
+
 while True:
     #Setup of and stream and window creation
     _, image = videoStream.read()
-    image = detect(image, faceClassifier, eyeClassifier)
+    image = detect(image, faceClassifier, eyeClassifier, imageId)
     cv2.imshow("face detection", image)
+    imageId += 1
 
     #How to terminate video stream
     if cv2.waitKey(1) & 0xFF == ord('q'):
